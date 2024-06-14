@@ -24,6 +24,10 @@ class TrainData(BaseModel):
 class PredictData(BaseModel):
     features: List[List[float]]
 
+@app.get("/", summary="Welcome Message")
+async def read_root():
+    return {"message": "Welcome to the Machine Learning API. Go to /docs for the API documentation."}
+
 @app.post("/training", summary="Train a model with provided data")
 async def train_model(data: TrainData):
     # Convert the input data to a DataFrame
@@ -57,20 +61,4 @@ async def predict(data: PredictData):
     model = joblib.load(MODEL_PATH)
     
     # Convert the input data to a DataFrame
-    X_new = pd.DataFrame(data.features)
-    
-    # Make predictions
-    predictions = model.predict(X_new)
-    
-    return {"predictions": predictions.tolist()}
-
-@app.get("/model", summary="Get model information from OpenAI or HuggingFace")
-async def get_model_info():
-    # Placeholder for actual implementation to call OpenAI or HuggingFace API
-    # Here, you can integrate with the APIs and fetch model information
-    return {"message": "This endpoint is a placeholder for OpenAI or HuggingFace API integration"}
-
-# Command to run the server: uvicorn api:app --reload
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+   
